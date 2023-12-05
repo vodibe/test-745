@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/513916367237492043/e54a71999bac415d9b3e84ce6c99a79a/artifacts
+deleted_time: 1701814356660
+end_time: 1701812309529
+entry_point_name: ''
+experiment_id: '513916367237492043'
+lifecycle_stage: deleted
+run_id: e54a71999bac415d9b3e84ce6c99a79a
+run_name: righteous-foal-943
+run_uuid: e54a71999bac415d9b3e84ce6c99a79a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1701812303599
+status: 3
+tags: []
+user_id: user

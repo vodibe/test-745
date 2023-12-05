@@ -1,0 +1,6 @@
+# venv python
+/venv
+
+# pycache
+**/__pycache__
+**/.trash
