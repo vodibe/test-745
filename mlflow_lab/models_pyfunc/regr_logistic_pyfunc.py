@@ -1,11 +1,11 @@
 import sys
 sys.path.append("..")
 sys.path.append("../models")
+
 import mlflow
 import pandas as pd
 from sklearn import datasets
 from models.regr_logistic import model1_info, X_test, y_test
-
 
 
 # Load the model back for predictions as a generic Python Function model

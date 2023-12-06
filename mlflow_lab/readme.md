@@ -29,7 +29,7 @@ python.
 ad esempio quando si verificano avvenimenti importanti (pandemie ecc...) gli esempi online possono
 cambiare distribuzione. Un modello che era risultato ottimo, ora può diventare inutile.
 
-## MLflow Tracking Step1: interfaccia semplice con il MLflow Tracking Server
+## MLflow Tracking (server + client grafico)
 
 https://mlflow.org/docs/latest/getting-started/intro-quickstart/index.html
 
@@ -39,22 +39,30 @@ cd mlflow_lab
 ```
 mlflow server --host 127.0.0.1 --port 8080
 ```
+I concetti che ci interessano sono:
 
-A questo punto creiamo il file `/models/regr_logistic.py`.
-
-Cosa creare:
-- codice sorgente del modello (es. un oggetto di una classe offerta da scikitlearn)
-- tutte le possibili combinazioni di iperparametri
-
-Cosa memorizzare:
-- (per ogni combinazione di iperparametri impiegata) quali sono metriche di performance + valori delle metriche
-  
-Poi dobbiamo creare l'oggetto **MLflow Model**. Questo oggetto è associato alla tipologia di modello e alla particolare combinazione di iperparametri.
-1. avviare una run di MLflow.
-2. loggare quanto memorizzato
-3. creare una firma = come si comporta il modello = TS + predizioni
-
+1 ) - Cosa vogliamo fare con un modello di apprendimento? Ci serve un modello di classificazione o regressione? **CONCETTO DI ESPERIMENTO**
 ```
+mlflow.set_experiment("MLflow Quickstart")
+# se non decidiamo un esperimento, ci sarà un esperimento di default.
+```
+
+2 ) - Creiamo il modello, es. un oggetto di una classe offerta da scikitlearn. Es. `/models/regr_logistic.py`. **ASSOCIATO AL MODELLO CREATO C'E' IL CONCETTO DI RUN**: esecuzioni di alcune parti di codice che genera dei metadati:
+- combinazione di iperparametri
+- metriche
+- orari di inizio e fine
+- artefatti:
+  - file di output della run (pesi del modello, immagini, ecc.).
+  
+NOTA: Se più run utilizzano lo stesso dataset di input (anche se ne utilizzano parti diverse), appartengono logicamente allo stesso esperimento. Per altre categorizzazioni gerarchiche è consigliabile l'utilizzo dei tag.
+```
+lr = LogisticRegression(**params)
+lr.fit(X_train, y_train)
+
+y_pred = lr.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+
 with mlflow.start_run():
     mlflow.log_params(params)
     mlflow.log_metric("accuracy", accuracy)
@@ -64,15 +72,16 @@ with mlflow.start_run():
     signature = infer_signature(X_train, lr.predict(X_train))
     ...
 ```
+![](../docs/Immagine.png)
 
-**&rarr; Cosa creare + run di MLflow + firma del modello = MLflow model**
+![](../docs/training-annotation.svg)
 
-**&rarr; A cosa serve un MLflow Model? A eseguire un esperimento**
+3 ) - A ogni run c'è una firma = comportamento del modello = TS + predizioni
 
-Se il modello è un oggetto di una classe offerta da scikitlearn:
+4 ) - **MLflow Model** = modello + firma
 
+- Se il modello è un oggetto di una classe offerta da scikitlearn:
 ```
-    ...
     model1_info = mlflow.sklearn.log_model(
             sk_model=lr,
             artifact_path="iris_model",
@@ -82,7 +91,7 @@ Se il modello è un oggetto di una classe offerta da scikitlearn:
     )
 ```
 
-Per astrarre il modello creiamo il file `/models_pyfunc/regr_logistic_pyfunc.py`.
+5 ) - Per astrarre il modello creiamo  `/models_pyfunc/regr_logistic_pyfunc.py`.
 
 ```
 loaded_model1 = mlflow.pyfunc.load_model(model1_info.model_uri)
@@ -95,22 +104,68 @@ result = pd.DataFrame(X_test, columns=iris_feature_names)
 result["actual_class"] = y_test
 result["predicted_class"] = predictions
 ```
-Eseguiamo quest'ultima parte di codice, e nella dashboard verrà aggiunto un esperimento. 
 
-Interfaccia web:
-
-```
-localhost:8080
-```
+6 )  - Eseguiamo il codice, e ci accorgeremo che verrà creata 1 run (e annesso esperimento). Verifichiamo nell'interfaccia web `localhost:8080`
 ![mlflow_esperimento](../docs/quickstart-our-run.png)
 
-## MLflow Tracking Step2: interfaccia programmata con il MLflow Tracking Server
+## MLflow Tracking (server + client programmato)
 
 https://mlflow.org/docs/latest/getting-started/logging-first-model/step2-mlflow-client.html
 
-Nello Step1 dovevamo eseguire manualmente l'astrazione del modello per poter esplicitare
-a MLflow la creazione di un esperimento associato al modello. Ora lo possiamo fare
-dinamicamente.
+6 )  - Eseguiamo il codice, e ci accorgeremo che verrà creata 1 run (e annesso esperimento). Verifichiamo programmaticamente.
+```
+from mlflow import MlflowClient
+from pprint import pprint
+from sklearn.ensemble import RandomForestRegressor
+
+client = MlflowClient(tracking_uri="http://127.0.0.1:8080")
+all_experiments = client.search_experiments()
+
+print(all_experiments)
+> [
+    <Experiment:
+        artifact_location='./mlruns/0',
+        creation_time=None,
+        experiment_id='0',
+        last_update_time=None,
+        lifecycle_stage='active',
+        name='Default',
+        tags={}
+    >
+]
+```
+![tag_experiment_run](../docs/tag-exp-run-relationship.svg)
+
+```
+# Provide an Experiment description that will appear in the UI
+experiment_description = (
+    "This is the grocery forecasting project. "
+    "This experiment contains the produce models for apples."
+)
+
+# Provide searchable tags that define characteristics of the Runs that
+# will be in this Experiment
+experiment_tags = {
+    "project_name": "grocery-forecasting",
+    "store_dept": "produce",
+    "team": "stores-ml",
+    "project_quarter": "Q3-2023",
+    "mlflow.note.content": experiment_description,
+}
+
+# Create the Experiment, providing a unique name
+produce_apples_experiment = client.create_experiment(
+    name="Apple_Models", tags=experiment_tags
+)
+```
+![experiment_ui](../docs/experiment-page-elements.svg)
+
+Cosa possiamo fare programmaticamente:
+- cercare esperimenti a partire da tag
+
+
+
+
 
 
 
