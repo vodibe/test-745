@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/116512055624117982/d9888de3c35d4505953011d804d6a2e7/artifacts
+end_time: 1702904161055
+entry_point_name: ''
+experiment_id: '116512055624117982'
+lifecycle_stage: active
+run_id: d9888de3c35d4505953011d804d6a2e7
+run_name: able-hog-360
+run_uuid: d9888de3c35d4505953011d804d6a2e7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1702904156366
+status: 3
+tags: []
+user_id: user

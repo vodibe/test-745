@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/116512055624117982/8a8c70e4e02a488c866d5243e542ff8c/artifacts
+end_time: 1702899919961
+entry_point_name: ''
+experiment_id: '116512055624117982'
+lifecycle_stage: active
+run_id: 8a8c70e4e02a488c866d5243e542ff8c
+run_name: lyrical-ape-508
+run_uuid: 8a8c70e4e02a488c866d5243e542ff8c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1702899915043
+status: 3
+tags: []
+user_id: user
