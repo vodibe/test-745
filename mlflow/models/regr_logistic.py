@@ -21,7 +21,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Define the model hyperparameters
 params = {
     "solver": "newton-cg",
-    "max_iter": 1000,
+    "max_iter": 200,
     "multi_class": "auto",
     "random_state": 8888,
 }
@@ -46,7 +46,7 @@ tags["registered_model_name"] = "model1_for_iris"
 
 
 set_experiment_run(
-    tracking_uri="http://127.0.0.1:8080",
+    tracking_uri="http://127.0.0.1:5000",
     experiment_name="experiment1",
     params=params,
     metrics={"accuracy": accuracy},
