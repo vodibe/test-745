@@ -73,6 +73,15 @@ mlflow models serve --model-uri models:/model1_for_iris/3 --port 5011 --env-mana
 - escape dei doppi apici con curl![serving3](img/serving_03.png)
 - Richiesta post con firefox
 
+### Operazioni sui modelli (aggiunta, rimozione, ricerca, alias, fasi di deployment, ...)
+
+https://mlflow.org/docs/latest/model-registry.html
+
+### Modello personalizzato
+
+https://mlflow.org/docs/latest/python_api/mlflow.pyfunc.html
+https://www.youtube.com/watch?v=zXwPLlthAfM
+
 
 
 
