@@ -4,7 +4,7 @@ Con MLFlow noi possiamo monitorare e interagire il ciclo di vita di un progetto 
 
 ## Ciclo di vita
 
-![ciclo_di_vita_ml](../img/mlflow-overview.png)
+![ciclo_di_vita_ml](img/mlflow-overview.png)
 
 **Data preparation**: ricerchiamo, raccogliamo, monitoriamo dati, risorse, esperimenti
 correlate al nostro progetto ML. Risorse sono "grezze".
@@ -72,9 +72,9 @@ with mlflow.start_run():
     signature = infer_signature(X_train, lr.predict(X_train))
     ...
 ```
-![](../img/Immagine.png)
+![](img/Immagine.png)
 
-![](../img/training-annotation.svg)
+![](img/training-annotation.svg)
 
 3 ) - A ogni run c'è una firma = comportamento del modello = TS + predizioni
 
@@ -106,7 +106,7 @@ result["predicted_class"] = predictions
 ```
 
 6 )  - Eseguiamo il codice, e ci accorgeremo che verrà creata 1 run (e annesso esperimento). Verifichiamo nell'interfaccia web `localhost:8080`
-![mlflow_esperimento](../img/quickstart-our-run.png)
+![mlflow_esperimento](img/quickstart-our-run.png)
 
 ## MLflow Tracking (server + client programmato)
 
@@ -134,7 +134,7 @@ print(all_experiments)
     >
 ]
 ```
-![tag_experiment_run](../img/tag-exp-run-relationship.svg)
+![tag_experiment_run](img/tag-exp-run-relationship.svg)
 
 ```
 # Provide an Experiment description that will appear in the UI
@@ -158,7 +158,7 @@ produce_apples_experiment = client.create_experiment(
     name="Apple_Models", tags=experiment_tags
 )
 ```
-![experiment_ui](../img/experiment-page-elements.svg)
+![experiment_ui](img/experiment-page-elements.svg)
 
 Cosa possiamo fare programmaticamente:
 - cercare esperimenti a partire da tag
